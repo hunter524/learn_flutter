@@ -9,11 +9,14 @@ class Class extends StatefulWidget{
   }
 }
 
+
+
 class GradeState extends State<Class>{
+
+
   @override
   Widget build(BuildContext context) {
 
-    print("class arguments ${ModalRoute.of(context).settings.arguments}}");
     return Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 200),
@@ -33,5 +36,19 @@ class GradeState extends State<Class>{
         )
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+//    print("class arguments initState ${ModalRoute.of(this.context).settings.arguments}}");
+
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print("class arguments deactivate${ModalRoute.of(this.context).settings.arguments}}");
+
   }
 }

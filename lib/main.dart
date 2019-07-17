@@ -1,12 +1,14 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 import 'class.dart';
 import 'grade.dart';
+import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -14,9 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      routes: {
-        'class':(context)=>Class()
-      },
+      routes: {'class': (context) {
+        print("call class builder from main.dart $context");
+        return Class();
+      }},
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -29,7 +32,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(key: ValueKey("home"),title: 'Flutter Demo Home Page 2'),
+      home:
+          MyHomePage(key: ValueKey("home"), title: 'Flutter Demo Home Page 2'),
     );
   }
 }
@@ -58,16 +62,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-
   @override
   void initState() {
     print("call init state");
     super.initState();
-    Future.delayed(Duration(seconds: 5),(){
+    Future.delayed(Duration(seconds: 5), () {
       return "hello";
-    }).then((result){
+    }).then((result) {
       setState(() {
-        _counter = _counter+5;
+        _counter = _counter + 5;
       });
     });
   }
@@ -91,6 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    var wordPair = WordPair.random();
+    AssetImage()
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -116,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               'You have pushed the button this many times:Instant!',
@@ -124,16 +130,22 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
+            Text(
+              '随机单词:$wordPair',
+              style: Theme.of(context).textTheme.body1,
+            ),
+
+            Image(image: AssetImage("assets/index.png"),height: 200,width: 100,fit: BoxFit.contain,),
+
             MaterialButton(
               child: Text("Go To One Grade!"),
-              onPressed: (){
-
-                Navigator.push(context, new MaterialPageRoute(builder: (context){
+              onPressed: () {
+                Navigator.push(context,
+                     new CupertinoPageRoute(builder: (context) {
                   return new Grade();
-                })).then((returnVar){
+                })).then((returnVar) {
                   print("Value Return From The Grade: $returnVar");
                 });
-                
               },
             )
           ],
