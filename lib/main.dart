@@ -1,25 +1,44 @@
 import 'dart:async';
 
+import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_app/widgets/CupertinoWidget.dart';
+import 'package:flutter_app/widgets/SomeWidgets.dart';
 
 import 'class.dart';
 import 'grade.dart';
-import 'package:english_words/english_words.dart';
+import 'lifecyclewidget/lifecylewidget.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runZoned(() => runApp(MyApp()), zoneSpecification: ZoneSpecification(
+      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+    parent.print(zone, "Intercepted: $line");
+  }));
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print("MyApp build!");
     return MaterialApp(
       title: 'Flutter Demo',
-      routes: {'class': (context) {
-        print("call class builder from main.dart $context");
-        return Class();
-      }},
+      routes: {
+        'class': (context) {
+          print("call class builder from main.dart $context");
+          return Class();
+        },
+        'lifecycle': (context) {
+          return LifeCycleWidget();
+        },
+        'cupertino': (context) {
+          return CupertinoUiFoo();
+        },
+        'somewidgets': (context) {
+          return SomeWidgets();
+        },
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -95,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     var wordPair = WordPair.random();
-    AssetImage()
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -134,18 +153,40 @@ class _MyHomePageState extends State<MyHomePage> {
               '随机单词:$wordPair',
               style: Theme.of(context).textTheme.body1,
             ),
+//            FlatButton(onPressed:(){
+//              print("flat button on Pressed! ddd");
+//            },
+//              child: Image(image: AssetImage("assets/index.png"),height: 400,width: 400,fit: BoxFit.contain,),),
 
-            Image(image: AssetImage("assets/index.png"),height: 200,width: 100,fit: BoxFit.contain,),
+//            FadeInImage(placeholder:AssetImage("assets/index.png"),image:AssetImage("assets/index.png"),width: 400,height: 200,),
 
             MaterialButton(
               child: Text("Go To One Grade!"),
               onPressed: () {
                 Navigator.push(context,
-                     new CupertinoPageRoute(builder: (context) {
+                    new CupertinoPageRoute(builder: (context) {
                   return new Grade();
                 })).then((returnVar) {
                   print("Value Return From The Grade: $returnVar");
                 });
+              },
+            ),
+            MaterialButton(
+              child: Text("Go To LifeCycle!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "lifecycle");
+              },
+            ),
+            MaterialButton(
+              child: Text("Go To Cupertino!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "cupertino");
+              },
+            ),
+            MaterialButton(
+              child: Text("Go To Somewidgets!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "somewidgets");
               },
             )
           ],
