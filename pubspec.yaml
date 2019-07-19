@@ -70,3 +70,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+  fonts:
+    - family: Hanalei
+      fonts:
+        - asset: fonts/Hanalei-Regular.ttf
+#Bahianita-Regular.ttf
+    - family: Bahianita
+      fonts:
+        - asset: fonts/Bahianita-Regular.ttf
