@@ -4,7 +4,9 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/CupertinoWidget.dart';
+import 'package:flutter_app/widgets/FormWidgets.dart';
 import 'package:flutter_app/widgets/SomeWidgets.dart';
+import 'package:flutter_app/widgets/WrapFlow.dart';
 
 import 'class.dart';
 import 'grade.dart';
@@ -38,6 +40,12 @@ class MyApp extends StatelessWidget {
         'somewidgets': (context) {
           return SomeWidgets();
         },
+        'formwidget': (context) {
+          return FormWidgets();
+        },
+        'wrapflow': (context) {
+          return WrapFlow();
+        }
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -188,7 +196,19 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.pushNamed(context, "somewidgets");
               },
-            )
+            ),
+            MaterialButton(
+              child: Text("Go To FormWidget!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "formwidget");
+              },
+            ),
+            MaterialButton(
+              child: Text("Go To WrapFlow!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "wrapflow");
+              },
+            ),
           ],
         ),
       ),

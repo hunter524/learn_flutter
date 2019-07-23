@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
 class SomeWidgets extends StatelessWidget {
+  var _txtedtcontroller = new TextEditingController();
+  var _focusNode = new FocusNode();
+
+  @override
+  StatelessElement createElement() {
+    this._focusNode.addListener(() {
+      print("TextField focusNode focus!");
+    });
+    return super.createElement();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +134,49 @@ class SomeWidgets extends StatelessWidget {
               ],
             ),
             Slider(value: 0.5, onChanged: (v) => {}),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  width: 390,
+                  height: 50,
+                  child: TextField(
+                    focusNode: this._focusNode,
+//                    autofocus: true,
+                    controller: this._txtedtcontroller,
+                    decoration: InputDecoration(
+//                        labelText: "用户名",
+                        hintText: "用户名或邮箱",
+                        prefixIcon: Icon(Icons.person),
+                        border: InputBorder.none),
+                    onChanged: (input) {
+//                      print("TextField Onchange : ${this._txtedtcontroller.text}");
+                      this._txtedtcontroller.selection = TextSelection(
+                          baseOffset: 0, extentOffset: input.length);
+                      this._txtedtcontroller.text = input;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 390,
+                  height: 50,
+                  child: TextField(
+//                    autofocus: true,
+                    controller: this._txtedtcontroller,
+                    decoration: InputDecoration(
+                        labelText: "密码",
+                        hintText: "密码",
+                        prefixIcon: Icon(Icons.person)),
+                    onChanged: (input) {
+//                      print("TextField Onchange : ${this._txtedtcontroller.text}");
+                      this._txtedtcontroller.selection = TextSelection(
+                          baseOffset: 0, extentOffset: input.length);
+                      this._txtedtcontroller.text = input;
+                    },
+                  ),
+                )
+              ],
+            ),
           ],
         ),
         decoration: BoxDecoration(color: Colors.white),
