@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widgets/ContainerWidgets.dart';
 import 'package:flutter_app/widgets/CupertinoWidget.dart';
 import 'package:flutter_app/widgets/FormWidgets.dart';
+import 'package:flutter_app/widgets/ScrollableWidgets.dart';
 import 'package:flutter_app/widgets/SomeWidgets.dart';
 import 'package:flutter_app/widgets/WrapFlow.dart';
 
@@ -45,6 +47,12 @@ class MyApp extends StatelessWidget {
         },
         'wrapflow': (context) {
           return WrapFlow();
+        },
+        'containerwidgets': (context) {
+          return ContainerWidgets();
+        },
+        'scrollablewidgets': (context) {
+          return ScrollableWidgets();
         }
       },
       theme: ThemeData(
@@ -129,6 +137,18 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.business), title: Text("Business"))
+      ]),
+
+      endDrawer: Drawer(
+        child: Text("DrawerLabel"),
+        semanticLabel: "Label",
+      ),
+
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -209,9 +229,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, "wrapflow");
               },
             ),
+            MaterialButton(
+              child: Text("Go To ContainerWidgets!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "containerwidgets");
+              },
+            ),
+            MaterialButton(
+              child: Text("Go To ScrollableWidgets!"),
+              onPressed: () {
+                Navigator.pushNamed(context, "scrollablewidgets");
+              },
+            )
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
