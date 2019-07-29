@@ -6,8 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/ContainerWidgets.dart';
 import 'package:flutter_app/widgets/CupertinoWidget.dart';
 import 'package:flutter_app/widgets/FormWidgets.dart';
+import 'package:flutter_app/widgets/FunctionWidgets.dart';
+import 'package:flutter_app/widgets/ScrollControllerWidgets.dart';
 import 'package:flutter_app/widgets/ScrollableWidgets.dart';
 import 'package:flutter_app/widgets/SomeWidgets.dart';
+import 'package:flutter_app/widgets/TouchEventHandler.dart';
 import 'package:flutter_app/widgets/WrapFlow.dart';
 
 import 'class.dart';
@@ -53,6 +56,15 @@ class MyApp extends StatelessWidget {
         },
         'scrollablewidgets': (context) {
           return ScrollableWidgets();
+        },
+        'scrollcontrollerwidgets': (context) {
+          return ScrollControllerWidgets();
+        },
+        'functionwidgets': (context) {
+          return FunctionWidgets();
+        },
+        'toucheventhandler':(context){
+          return TouchEventHandler();
         }
       },
       theme: ThemeData(
@@ -152,35 +164,37 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:Instant!',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-            Text(
-              '随机单词:$wordPair',
-              style: Theme.of(context).textTheme.body1,
-            ),
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: Column(
+              // Column is also layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'You have pushed the button this many times:Instant!',
+                ),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.display1,
+                ),
+                Text(
+                  '随机单词:$wordPair',
+                  style: Theme.of(context).textTheme.body1,
+                ),
 //            FlatButton(onPressed:(){
 //              print("flat button on Pressed! ddd");
 //            },
@@ -188,60 +202,82 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //            FadeInImage(placeholder:AssetImage("assets/index.png"),image:AssetImage("assets/index.png"),width: 400,height: 200,),
 
-            MaterialButton(
-              child: Text("Go To One Grade!"),
-              onPressed: () {
-                Navigator.push(context,
-                    new CupertinoPageRoute(builder: (context) {
-                  return new Grade();
-                })).then((returnVar) {
-                  print("Value Return From The Grade: $returnVar");
-                });
-              },
+                MaterialButton(
+                  child: Text("Go To One Grade!"),
+                  onPressed: () {
+                    Navigator.push(context,
+                        new CupertinoPageRoute(builder: (context) {
+                      return new Grade();
+                    })).then((returnVar) {
+                      print("Value Return From The Grade: $returnVar");
+                    });
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To LifeCycle!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "lifecycle");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To Cupertino!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "cupertino");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To Somewidgets!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "somewidgets");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To FormWidget!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "formwidget");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To WrapFlow!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "wrapflow");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To ContainerWidgets!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "containerwidgets");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To ScrollableWidgets!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "scrollablewidgets");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To ScrollController!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "scrollcontrollerwidgets");
+                  },
+                ),
+
+                MaterialButton(
+                  child: Text("Go To FunctionWidgets!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "functionwidgets");
+                  },
+                ),
+
+                MaterialButton(
+                  child: Text("Go To TouchEventHandler!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "toucheventhandler");
+                  },
+                )
+              ],
             ),
-            MaterialButton(
-              child: Text("Go To LifeCycle!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "lifecycle");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To Cupertino!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "cupertino");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To Somewidgets!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "somewidgets");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To FormWidget!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "formwidget");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To WrapFlow!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "wrapflow");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To ContainerWidgets!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "containerwidgets");
-              },
-            ),
-            MaterialButton(
-              child: Text("Go To ScrollableWidgets!"),
-              onPressed: () {
-                Navigator.pushNamed(context, "scrollablewidgets");
-              },
-            )
-          ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
