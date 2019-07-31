@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/widgets/Animations.dart';
 import 'package:flutter_app/widgets/ContainerWidgets.dart';
 import 'package:flutter_app/widgets/CupertinoWidget.dart';
 import 'package:flutter_app/widgets/FormWidgets.dart';
@@ -63,8 +64,11 @@ class MyApp extends StatelessWidget {
         'functionwidgets': (context) {
           return FunctionWidgets();
         },
-        'toucheventhandler':(context){
+        'toucheventhandler': (context) {
           return TouchEventHandler();
+        },
+        'animationwidgets': (context) {
+          return AnimationWidgets();
         }
       },
       theme: ThemeData(
@@ -273,6 +277,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text("Go To TouchEventHandler!"),
                   onPressed: () {
                     Navigator.pushNamed(context, "toucheventhandler");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To AnimationWidgets!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "animationwidgets");
                   },
                 )
               ],
