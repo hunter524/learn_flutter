@@ -1,3 +1,5 @@
+import 'dart:ui' deferred as DartUi;
+
 import 'package:flutter/material.dart';
 
 class AnimationWidgets extends StatefulWidget {
@@ -14,6 +16,8 @@ class _StateAnimationWidgets extends State<AnimationWidgets>
   Animation<double> _animation;
   AnimationController _compositeController;
 
+  Offset touchOffset = Offset(0, 0);
+
   @override
   void initState() {
     // TODO: implement initState
@@ -26,7 +30,11 @@ class _StateAnimationWidgets extends State<AnimationWidgets>
     _animation = Tween(begin: 0.0, end: 300.0).animate(_animation)
       ..addListener(() {
         setState(() {});
-      });
+      })
+      ..addListener(() {
+//        print("chain call");
+      }
+      );
     _animationController.forward();
   }
 
@@ -64,7 +72,21 @@ class _StateAnimationWidgets extends State<AnimationWidgets>
                             height: _animation.value,
                           );
                         },
-                      )
+                      ),
+                      GradientButton(
+                        child: Text("GradientButton"), width: 200, height: 50,colors: [Colors.pink[100],Colors.pink],onTap: (){
+                          print("onTap GradientButton");
+                      },),
+                      GestureDetector(
+                        onTapDown: (evt){
+                          print("CustomPaint Down: ${evt.localPosition}");
+                          setState(() {
+                            touchOffset = Offset(evt.localPosition.dx, evt.localPosition.dy);
+                          });
+                        },
+                        child: CustomPaint(
+                          painter: MyPainter(touchOffset), size: Size(300, 300),),)
+
                     ],
                   ),
                 ),
@@ -136,13 +158,14 @@ class CompositeAnimation extends StatelessWidget {
         .animate(CurvedAnimation(
             parent: animationController, curve: Interval(0.6, 1)));
   }
-
   Animation<double> height;
   Animation<Color> color;
   Animation<EdgeInsets> padding;
+  int a =3;
 
   @override
   Widget build(BuildContext context) {
+    var b =a is int?"int":"noint";
     // TODO: implement build
     return Container(
       alignment: Alignment.bottomLeft,
@@ -157,4 +180,109 @@ class CompositeAnimation extends StatelessWidget {
       ),
     );
   }
+}
+
+class GradientButton extends StatelessWidget {
+  GradientButton({
+    this.colors,
+    this.width,
+    this.height,
+    this.onTap,
+    @required this.child,
+  });
+
+  // 渐变色数组
+  final List<Color> colors;
+
+  // 按钮宽高
+  final double width;
+  final double height;
+
+  final Widget child;
+
+  //点击回调
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+
+    //确保colors数组不空
+    List<Color> _colors = colors ??
+        [theme.primaryColor, theme.primaryColorDark ?? theme.primaryColor];
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: _colors),
+      ),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          radius: 100,
+          splashColor: colors.last,
+          highlightColor: Colors.transparent,
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: BoxConstraints.tightFor(height: height, width: width),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DefaultTextStyle(
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    child: child),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+//通过传入Offset绘制圆点
+//结合GestureDetector组件完成对用户点击行为的检测
+class MyPainter extends CustomPainter{
+
+  Offset offset;
+
+
+  MyPainter(this.offset);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint
+    ..style=PaintingStyle.fill
+    ..color=Colors.orange[100];
+    
+    canvas.drawRect(Offset.zero&size, paint);
+
+    paint..style=PaintingStyle.stroke..color=Colors.black87..strokeWidth=1.0;
+    double eH = size.height/15;
+    double eW = size.width/15;
+
+    for(var i=0;i<15;i++){
+      var dy = i*eH;
+      canvas.drawLine(Offset(0, dy), Offset(size.width, dy), paint);
+    }
+
+    for(var i=0;i<15;i++){
+      var dx = eW*i;
+      canvas.drawLine(Offset(dx, 0), Offset(dx, size.height), paint);
+    }
+
+    paint..style=PaintingStyle.fill..color=Colors.grey;
+    canvas.drawCircle(offset, 5, paint);
+//    todo:// 绘制文字暂时没有成功
+    var pb = DartUi.ParagraphBuilder(DartUi.ParagraphStyle(fontSize: 15));
+    pb..addText("bar")..pushStyle(DartUi.TextStyle(color: Colors.black87));
+    canvas.drawParagraph(pb.build(),Offset(10, 10));
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    // TODO: implement shouldRepaint
+    return true;
+  }
+
 }

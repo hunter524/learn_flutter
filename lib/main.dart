@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,9 +14,11 @@ import 'package:flutter_app/widgets/ScrollableWidgets.dart';
 import 'package:flutter_app/widgets/SomeWidgets.dart';
 import 'package:flutter_app/widgets/TouchEventHandler.dart';
 import 'package:flutter_app/widgets/WrapFlow.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'class.dart';
 import 'grade.dart';
+import 'io/IoTest.dart';
 import 'lifecyclewidget/lifecylewidget.dart';
 
 void main() {
@@ -69,6 +72,9 @@ class MyApp extends StatelessWidget {
         },
         'animationwidgets': (context) {
           return AnimationWidgets();
+        },
+        'iotest': (context) {
+          return IoTest();
         }
       },
       theme: ThemeData(
@@ -114,19 +120,31 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   @override
-  void initState() {
+  void initState()  {
     print("call init state");
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
-      return "hello";
-    }).then((result) {
+//    Future.delayed(Duration(seconds: 5), () {
+//      return "hello";
+//    }).then((result) {
+//      setState(() {
+//        _counter = _counter + 5;
+//      });
+//    });
+    getApplicationSupportDirectory().then((filePath){
+      var file = File("${filePath.path}/counter.txt");
+      if(!file.existsSync()){
+        print("file not exist");
+        return;
+      }
+      var counter = file.readAsStringSync();
       setState(() {
-        _counter = _counter + 5;
+        _counter = int.parse(counter);
       });
     });
+
   }
 
-  void _incrementCounter() {
+  void _incrementCounter() async {
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -134,7 +152,29 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+//      以下三个均为内置存储目录 (!!! 同时调用多次会报错!!!)
+//      内置存储目录下的 app_flutter 目录
+//      getApplicationDocumentsDirectory().then((data) {
+//        print("data: ${data.path}");
+//      });
+//
+//      getApplicationSupportDirectory().then((file){
+//        print("file: ${file.path}");
+//      });
+//
+//      getTemporaryDirectory().then((cache){
+//        print("cache: ${cache.path}");
+//      });
+////外部存储目录的files
+//      getExternalStorageDirectory().then((externfile){
+//        print("external file: ${externfile.path}");
+//      });
     });
+
+    var filePath = (await getApplicationSupportDirectory()).path;
+    var file = File("$filePath/counter.txt");
+    await file.writeAsString(_counter.toString(),flush: true);
+    print("writeScuccess");
   }
 
   @override
@@ -283,6 +323,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text("Go To AnimationWidgets!"),
                   onPressed: () {
                     Navigator.pushNamed(context, "animationwidgets");
+                  },
+                ),
+                MaterialButton(
+                  child: Text("Go To IoTest!"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, "iotest");
                   },
                 )
               ],
