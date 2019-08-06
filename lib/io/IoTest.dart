@@ -15,7 +15,9 @@ class IoTest extends StatefulWidget {
 
 class IoState extends State<IoTest> {
   String resp = "";
+  String socketResp = "";
   IOWebSocketChannel _ioWebSocketChannel;
+
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class IoState extends State<IoTest> {
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +63,7 @@ class IoState extends State<IoTest> {
                 });
               },
             ),
-            Text("Resp:\n$resp"),
+            Text("Http Resp:\n$resp"),
             FlatButton(
               child: Text("Send Wss"),
               onPressed: (){
@@ -91,13 +94,23 @@ class IoState extends State<IoTest> {
                 await socket.flush();
                 var content = await socket.transform(utf8.decoder).join();
                 setState(() {
-                  resp = content;
+                  socketResp = content;
                 });
                 socket.close();
 
               },
             ),
-            Text("Socket Resp:\n$resp"),
+            Text("Socket Resp:\n$socketResp"),
+            FlatButton(
+              child: Text("Send Socket"),
+              onPressed: () async {
+                String jsonStr = '[{"name":"Jack","email":"123@123.com"},{"name":"Rose","email":"456@456.com"}]';
+
+                var listPerson = json.decode(jsonStr);
+
+                print(listPerson[0]['name']);
+              },
+            ),
           ],
         ),
       ),
