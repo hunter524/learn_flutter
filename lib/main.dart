@@ -1,5 +1,5 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_app/widgets/FormWidgets.dart';
 import 'package:flutter_app/widgets/FunctionWidgets.dart';
 import 'package:flutter_app/widgets/ScrollControllerWidgets.dart';
 import 'package:flutter_app/widgets/ScrollableWidgets.dart';
+import 'package:flutter_app/widgets/SimpleWidget.dart';
 import 'package:flutter_app/widgets/SomeWidgets.dart';
 import 'package:flutter_app/widgets/TouchEventHandler.dart';
 import 'package:flutter_app/widgets/WrapFlow.dart';
@@ -22,10 +23,13 @@ import 'io/IoTest.dart';
 import 'lifecyclewidget/lifecylewidget.dart';
 
 void main() {
-  runZoned(() => runApp(MyApp()), zoneSpecification: ZoneSpecification(
-      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
-    parent.print(zone, "Intercepted: $line");
-  }));
+//  复杂的实现
+//  runZoned(() => runApp(MyApp()), zoneSpecification: ZoneSpecification(
+//      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+//    parent.print(zone, "Intercepted: $line");
+//  }));
+// 替换成简单的实现
+runApp(SimpleWidget());
 }
 
 class MyApp extends StatelessWidget {
@@ -122,6 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState()  {
     print("call init state");
+
     super.initState();
 //    Future.delayed(Duration(seconds: 5), () {
 //      return "hello";
@@ -130,6 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //        _counter = _counter + 5;
 //      });
 //    });
+
     getApplicationSupportDirectory().then((filePath){
       var file = File("${filePath.path}/counter.txt");
       if(!file.existsSync()){
@@ -179,6 +185,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("${window.viewInsets},${window.viewPadding},${window.devicePixelRatio}\n${window.physicalSize}");
+//
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -226,8 +234,10 @@ class _MyHomePageState extends State<MyHomePage> {
               // axis because Columns are vertical (the cross axis would be
               // horizontal).
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Container(width: 399,height:200,decoration: BoxDecoration(color: Colors.blue),),
+
                 Text(
                   'You have pushed the button this many times:Instant!',
                 ),
