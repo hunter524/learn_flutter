@@ -92,12 +92,11 @@ class IoState extends State<IoTest> {
                 socket.writeln("Connection:close");
                 socket.writeln();
                 await socket.flush();
-                var content = await socket.transform(utf8.decoder).join();
-                setState(() {
-                  socketResp = content;
-                });
-                socket.close();
-
+                // var content = await socket.transform(ne).join();
+                // setState(() {
+                //   socketResp = content;
+                // });
+                // socket.close();
               },
             ),
             Text("Socket Resp:\n$socketResp"),

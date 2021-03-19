@@ -83,9 +83,9 @@ class ShareDataWidget extends InheritedWidget {
     return this.data != oldWidget.data;
   }
 
-  static ShareDataWidget of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(ShareDataWidget);
-  }
+  // static ShareDataWidget of(BuildContext context) {
+  //   return context.inheritFromWidgetOfExactType(ShareDataWidget);
+  // }
 }
 
 class InnerWidgets extends StatefulWidget {
@@ -100,7 +100,7 @@ class _StateInnerWidgets extends State<InnerWidgets> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Text(ShareDataWidget.of(context).data.toString());
+    return Text("ShareDataWidget.of(context).data.toString()");
   }
 
   @override

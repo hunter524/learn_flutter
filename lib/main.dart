@@ -11,8 +11,6 @@ import 'package:flutter_app/widgets/FormWidgets.dart';
 import 'package:flutter_app/widgets/FunctionWidgets.dart';
 import 'package:flutter_app/widgets/ScrollControllerWidgets.dart';
 import 'package:flutter_app/widgets/ScrollableWidgets.dart';
-import 'package:flutter_app/widgets/SimpleWidget.dart';
-import 'package:flutter_app/widgets/SomeWidgets.dart';
 import 'package:flutter_app/widgets/TouchEventHandler.dart';
 import 'package:flutter_app/widgets/WrapFlow.dart';
 import 'package:path_provider/path_provider.dart';
@@ -29,9 +27,8 @@ void main() {
 //    parent.print(zone, "Intercepted: $line");
 //  }));
 // 替换成简单的实现
-runApp(SimpleWidget());
+runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -50,9 +47,9 @@ class MyApp extends StatelessWidget {
         'cupertino': (context) {
           return CupertinoUiFoo();
         },
-        'somewidgets': (context) {
-          return SomeWidgets();
-        },
+//        'somewidgets': (context) {
+//          return SomeWidgets();
+//        },
         'formwidget': (context) {
           return FormWidgets();
         },
@@ -115,8 +112,24 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() {
+//    dart 语法测试
     print("key is :${this.key}");
+    dynamic a = "aaa";
+    var str = "Str";
+    print("a length is ${a.length}");
+    a = 111;
+    print("a is ${a} without length");
+    print("str ${str.codeUnitAt(0)}");
+
     return _MyHomePageState();
+  }
+
+  int loopInfinity() {
+    int sum = 0;
+    for (int i = 0; i < 100000000000; i++) {
+      sum = sum + i;
+    }
+    return sum;
   }
 }
 
